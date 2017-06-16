@@ -6,6 +6,7 @@ pipeline:
       - helm init --client-only
       - mkdir charts
       - helm package -d charts drone
+      - mv index.html charts/index.html
       - cd charts
       - helm repo index .
   publish:
