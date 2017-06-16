@@ -4,8 +4,8 @@ pipeline:
     image: lachlanevenson/k8s-helm
     commands:
       - helm init --client-only
-      - helm package drone
-      - helm repo index .
+      - helm package -d charts drone
+      - (cd charts && helm repo index .)
   publish:
     image: alpine
     commands:
