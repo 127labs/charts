@@ -1,3 +1,4 @@
+branches: [master]
 pipeline:
   build:
     image: lachlanevenson/k8s-helm
