@@ -1,0 +1,31 @@
+replicas: 1
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 384Mi
+  requests:
+    cpu: 300m
+    memory: 384Mi
+
+image:
+  repository: 127labs/emq
+  tag: latest
+  pullPolicy: IfNotPresent
+
+env:
+  EMQ_LISTENER__TCP__EXTERNAL: 1883
+  EMQ_DASHBOARD__LISTENER__HTTP: 18083
+  EMQ_EVENT_STORE__HOSTNAME: localhost
+  EMQ_EVENT_STORE__PORT: 5432
+  EMQ_EVENT_STORE__DATABASE: emq_event_store
+  EMQ_EVENT_STORE__USERNAME: postgres
+  EMQ_EVENT_STORE__PASSWORD: postgres
+  EMQ_LOADED_PLUGINS: emq_recon,emq_modules,emq_retainer,emq_dashboard,emq_event_store
+ingress:
+  enabled: true
+  # enable TLS via kube-lego
+  tls: false
+  hostname: emqtt.example.com
+  annotations:
+    kubernetes.io/ingress.class: nginx

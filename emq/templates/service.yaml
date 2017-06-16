@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: {{ .Values.env.EMQ_DASHBOARD__LISTENER__HTTP }}
+    protocol: TCP
+    name: dashboard
+  - port: {{ .Values.env.EMQ_LISTENER__TCP__EXTERNAL }}
+    targetPort: {{ .Values.env.EMQ_LISTENER__TCP__EXTERNAL }}
+    protocol: TCP
+    name: mqtt
+  selector:
+    app: {{ template "fullname" . }}

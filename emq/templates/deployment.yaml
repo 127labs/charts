@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: mqtt
+          containerPort: {{ .Values.env.EMQ_LISTENER__TCP__EXTERNAL }}
+        - name: dashboard
+          containerPort: {{ .Values.env.EMQ_DASHBOARD__LISTENER__HTTP }}
+        env:
+        {{ range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+        {{ end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
