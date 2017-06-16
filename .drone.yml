@@ -9,7 +9,9 @@ pipeline:
       - cd charts
       - helm repo index .
   publish:
-    image: alpine
+    image: node
     commands:
-      - ls
-      - git --version
+      - npm install surge
+      - ./node_modules/.bin/surge --version
+      - ./node_modules/.bin/surge --project ./charts --domain charts.127labs.com
+    secrets: [surge_login, surge_token]
