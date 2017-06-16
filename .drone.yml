@@ -3,9 +3,8 @@ pipeline:
   build:
     image: lachlanevenson/k8s-helm
     commands:
-      - helm init
       - helm package drone
-      - helm repo index
+      - helm repo index .
   publish:
     image: alpine
     commands:
