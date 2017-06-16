@@ -6,8 +6,10 @@ pipeline:
       - helm init --client-only
       - mkdir charts
       - helm package -d charts drone
-      - (cd charts && helm repo index .)
+      - cd charts
+      - helm repo index .
   publish:
     image: alpine
     commands:
       - ls
+      - git --version
