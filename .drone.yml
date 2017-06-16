@@ -1,0 +1,10 @@
+pipeline:
+  build:
+    image: lachlanevenson/k8s-helm
+    commands:
+      - package drone
+      - repo index
+  publish:
+    image: alpine
+    commands:
+      - ls
