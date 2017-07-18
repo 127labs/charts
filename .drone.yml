@@ -6,6 +6,8 @@ pipeline:
       - helm init --client-only
       - mkdir charts
       - helm package -d charts drone
+      - helm package -d charts emq
+      - helm package -d charts hanami
       - mv index.html charts/index.html
       - cd charts
       - helm repo index .
