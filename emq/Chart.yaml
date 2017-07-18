@@ -1,4 +1,9 @@
 apiVersion: v1
-description: A Helm chart for Kubernetes
+description: MQTT Message Broker
+keywords:
+- mqtt
+- emq
+- message broke
+- erlang
 name: emq
 version: 0.1.0
