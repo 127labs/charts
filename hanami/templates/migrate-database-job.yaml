@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ template "fullname" . }}-migrate-database-job"
+  labels:
+    app: "{{ template "fullname" . }}-migrate-database-job"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "0"
+spec:
+  template:
+    metadata:
+      name: "{{ template "fullname" . }}-migrate-database-job"
+      labels:
+        heritage: {{ .Release.Service | quote }}
+        release: "{{ template "fullname" . }}-migrate-database-job"
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: "{{ .Chart.Name }}-migrate-database-job"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ["/usr/local/bundle/bin/hanami", "db", "migrate"]
+          env:
+            {{ range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{ end }}
+          resources:
+            limits:
+              cpu: 50m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
